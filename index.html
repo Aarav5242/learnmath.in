@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Pacifico&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Math Game</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<audio id="correctSound" src="correct.mp3.mp3" preload="auto"></audio>
+<audio id="wrongSound" src="wrong.mp3.mp3" preload="auto"></audio>
+<audio id="confettiSound" src="confetti.mp3.m4a" preload="auto"></audio>
+
+
+<!-- Welcome Screen -->
+<div id="welcomeScreen" class="screen active">
+  <h1>Welcome to Math Game</h1>
+  <p style="text-align:center; max-width:600px; margin:8px auto; font-size:18px;">Sharpen your math skills with fun, timed quizzes across addition, subtraction, multiplication and division.</p>
+  <div class="row" style="flex-direction:column; gap:12px; margin-top:10px;">
+    <button onclick="showScreen('nameScreen')">Play</button>
+    <button onclick="showScreen('learn')">Learn</button>
+  </div>
+</div>
+
+<!-- Name Screen -->
+<div id="nameScreen" class="screen">
+  <h1><img src="math_title.png.png" alt="Math Game" class="site-logo"></h1>
+  <h2>Enter Your Name</h2>
+  <input type="text" id="playerName" placeholder="Your name..." maxlength="30" onkeypress="if(event.key==='Enter') submitName()">
+  <button onclick="submitName()">Continue</button>
+</div>
+
+<!-- Learn / Instructions Screen -->
+<div id="learn" class="screen">
+  <h1>How to Play</h1>
+  <div style="max-width:720px; text-align:left; font-size:18px;">
+    <ul>
+      <li>Choose an operation from the menu (Addition, Subtraction, Multiplication, Division).</li>
+      <li>Select a difficulty level to set number of questions and time limit.</li>
+      <li>Answer the multiple-choice questions before time runs out.</li>
+      <li>Your final score and rank will be shown at the end.</li>
+    </ul>
+  </div>
+  <div class="row" style="flex-direction:column; gap:10px; margin-top:12px;">
+    <button onclick="showScreen('nameScreen')">Continue</button>
+    <button onclick="showScreen('welcomeScreen')">Back</button>
+  </div>
+</div>
+
+<!-- Menu -->
+<div id="menu" class="screen">
+  <h1><img src="math_title.png.png" alt="Math Game" class="site-logo"></h1>
+  <h2 id="welcomeMsg">Choose an operation</h2>
+  <div class="row">
+    <button onclick="selectOperation('add')">Addition</button>
+    <button onclick="selectOperation('sub')">Subtraction</button>
+  </div>
+  <div class="row">
+    <button onclick="selectOperation('mul')">Multiplication</button>
+    <button onclick="selectOperation('div')">Division</button>
+  </div>
+</div>
+
+<!-- Levels -->
+<div id="levels" class="screen">
+  <h1>Select Level</h1>
+  <button onclick="startGame(1)">Easy</button>
+  <button onclick="startGame(2)">Medium</button>
+  <button onclick="startGame(3)">Hard</button>
+  <button onclick="showScreen('menu')">Back</button>
+</div>
+
+<!-- Game -->
+<div id="game" class="screen">
+  
+  <div id="question">Question text</div>
+
+  <div id="options">
+    <div class="row">
+      <button class="opt">A</button>
+      <button class="opt">B</button>
+    </div>
+    <div class="row">
+      <button class="opt">C</button>
+      <button class="opt">D</button>
+    </div>
+  </div>
+
+  <div id="gameStatusArea">
+    <div id="counter">Q: 0/0</div>
+    <div id="playerInfo"></div>
+    <div id="status">Ready</div>
+  </div>
+
+  <div class="controls">
+    <button class="small-btn" onclick="backToLevels()">Back</button>
+    <button class="small-btn" onclick="restartToHome()">Home</button>
+  </div>
+
+</div>
+
+
+<!-- Result -->
+<div id="result" class="screen">
+  <h1 id="finalMsg"></h1>
+<h2 id="resultName"></h2>
+<h2 id="finalScore"></h2>
+<h2 id="finalPercent"></h2>
+<h2 id="finalRank"></h2>
+<button onclick="restartToHome()">Play Again</button>
+</div>
+
+<!-- Effects -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

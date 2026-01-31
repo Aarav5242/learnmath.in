@@ -1,0 +1,621 @@
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  /* Use a blue-ish fallback so mobile chrome UI doesn't reveal a maroon strip
+     if the background image is cropped by the browser chrome. */
+  background-color: #5aaed8;
+  color: #ffffff;
+  font-family: Arial, Helvetica, sans-serif;
+
+  /* main background image */
+  background-image: url("back.jpg");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  background-attachment: fixed;
+
+  min-height: 100vh;
+  overflow: auto;
+}
+
+
+
+/* Heading image (site logo) */
+.site-logo {
+  width: 320px;
+  max-width: 80vw;
+  height: auto;
+  display: block;
+  margin: 8px auto;
+}
+
+
+.screen {
+  width: 100vw;
+  /* Make each screen span the full viewport to avoid exposed body background
+     showing as a maroon band on some mobile browsers. Use safe-area for
+     devices with gesture bars. */
+  min-height: 100vh;
+  height: auto;
+  display: none;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 20px 10px calc(env(safe-area-inset-bottom, 20px) + 20px);
+  gap: 20px;
+  overflow-y: auto;
+}
+
+.screen.active {
+  display: flex;
+}
+
+button {
+  background: #997A80;   /* Bazaar */
+  color: white;
+
+  font-weight: bold;
+
+  border: 2px solid #731211;
+
+  transition: all 0.2s ease;
+}
+
+button:hover {
+  transform: translateY(-3px);
+  background: #731211;   /* UP Maroon */
+}
+
+
+#menu {
+  gap: 10px;
+}
+
+#menu .row {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+}
+
+#menu button {
+  width: 260px;
+  max-width: 90vw;
+}
+
+#levels button {
+  width: 260px;
+  max-width: 90vw;
+}
+
+input {
+  width: 260px;
+  max-width: 90vw;
+  height: 50px;
+  font-size: 20px;
+  padding: 8px;
+  text-align: center;
+  border: 2px solid #911a46;
+  border-radius: 10px;
+}
+
+input:focus {
+  outline: none;
+  border-color: #0056b3;
+  box-shadow: 0 0 6px rgba(0, 123, 255, .5);
+}
+
+#question {
+  font-size: clamp(30px, 8vw, 60px);
+  font-weight: bold;
+  text-align: center;
+  margin: 10px 0 20px;
+}
+
+#options {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.row {
+  display: flex;
+  gap: 14px;
+}
+
+/* Option Buttons */
+.opt {
+  width: clamp(140px, 32vw, 220px);
+  height: clamp(60px, 13vw, 90px);
+
+  font-size: clamp(22px, 5vw, 32px);
+  font-weight: bold;
+
+  border-radius: 14px;
+
+  background: #EAE0DC;       /* Platinum */
+  color: #ffffff;
+  -webkit-text-fill-color: white;
+
+  border: 2px solid #731211; /* UP Maroon */
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+
+/* Click effect */
+.opt:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+}
+
+
+
+#gameStatusArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin-top: 15px;
+}
+
+#counter, #playerInfo {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+#status {
+  font-size: 24px;
+  font-weight: bold;
+  margin-top: 8px;
+}
+
+
+/* Control buttons */
+.controls {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* Option Buttons */
+.opt {
+  width: clamp(140px, 32vw, 220px);
+  height: clamp(60px, 13vw, 90px);
+
+  font-size: clamp(22px, 5vw, 32px);
+  font-weight: bold;
+
+  border-radius: 14px;
+
+  background-color: #EAE0DC !important;  /* FORCE Platinum */
+  color: white !important;
+
+  border: 2px solid #731211;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+
+  box-shadow: 0 4px 8px rgba(0,0,0,0.25);
+}
+
+/* Disable hover effects on touch devices */
+@media (hover: hover) and (pointer: fine) {
+
+  .opt:hover {
+    background: #A4B5C3;   /* Cadet Blue (example) */
+    color: #000;
+    transform: translateY(-3px);
+  }
+
+}
+
+/* Correct/Wrong must always win */
+.opt.correct:hover,
+.opt.wrong:hover {
+  background: inherit !important;
+}
+
+
+/* Mobile adjustments */
+@media (max-width: 520px) {
+  button {
+    font-size: 18px;
+    height: 50px;
+  }
+  #status {
+    font-size: 22px;
+  }
+}
+
+
+/* Larger buttons on Welcome screen */
+#welcomeScreen .row button {
+  width: clamp(220px, 40vw, 320px);
+  max-width: 90vw;
+  font-size: 22px;
+  border-radius: 12px;
+}
+
+/* Match Learn screen buttons to Welcome screen (same width & height) */
+#learn .row button {
+  width: clamp(220px, 40vw, 320px);
+  max-width: 90vw;
+  height: 60px;
+  font-size: 22px;
+  border-radius: 12px;
+}
+
+/* Result screen: larger Play Again button */
+#result button {
+  height: 60px;
+  font-size: 20px;
+  width: 240px;
+  max-width: 90vw;
+  border-radius: 12px;
+}
+/* Restore Button Animation */
+button {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.25);
+}
+
+button:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+}
+
+/* ===== MULTI COLOR BUTTON THEME ===== */
+
+/* COMMON BUTTON STYLE */
+button,
+.opt,
+.small-btn {
+  cursor: pointer;
+  border-radius: 12px;
+  font-weight: bold;
+  border: 2px solid transparent;
+
+  transition: all 0.2s ease;
+}
+
+/* Hover Lift Effect */
+button:hover,
+.opt:hover,
+.small-btn:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+}
+
+button:active,
+.opt:active,
+.small-btn:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+
+/* ===============================
+   CONTINUE / PLAY / MAIN BUTTON
+   (Cadet Blue)
+================================ */
+#nameScreen button,
+#result button {
+  background: #A4B5C3;
+  color: #293039;
+  border-color: #293039;
+}
+
+#nameScreen button:hover,
+#result button:hover {
+  background: #997A80;
+  color: white;
+}
+
+
+/* ===============================
+   MENU BUTTONS
+   (Platinum)
+================================ */
+#menu button,
+#levels button {
+  background: #EAE0DC;
+  color: #293039;
+  border-color: #997A80;
+}
+
+#menu button:hover,
+#levels button:hover {
+  background: #A4B5C3;
+}
+
+
+/* ===============================
+   OPTIONS BUTTONS
+   (Gunmetal Base)
+================================ */
+.opt {
+  background: #EAE0DC !important;
+  color: #293039;
+  border-color: #A4B5C3;
+}
+
+
+
+/* ===============================
+   CONTROL BUTTONS (Back / Restart)
+   (Bazaar)
+================================ */
+.small-btn {
+  background: #997A80;
+  color: white;
+  border-color: #731211;
+}
+
+.small-btn:hover {
+  background: #731211;
+}
+
+
+/* ===============================
+   CORRECT / WRONG COLORS
+================================ */
+.opt.correct {
+  background: #2E7D32 !important;
+  color: rgb(255, 245, 245);
+  border-color: #2E7D32;
+}
+
+.opt.wrong {
+  background: #5A0D0D !important;
+  color: rgb(255, 255, 255);
+  border-color: #5A0D0D;
+}
+/* ================= BUTTON FINAL FIX ================= */
+
+/* MAIN BUTTON STYLE */
+button,
+.small-btn {
+
+  width: 240px;
+  height: 60px;
+
+  padding: 10px;
+
+  font-size: 22px;
+  font-weight: 600;
+
+  border-radius: 14px;
+  border: none;
+
+  background: #EAE0DC;   /* Platinum */
+  color: #293039;        /* Gunmetal */
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  transition: all 0.25s ease;
+}
+
+
+/* OPTION BUTTONS (answers) */
+.opt {
+
+  width: 145px;
+  height: 60px;
+
+  font-size: 28px;
+
+  background: #EAE0DC;   /* Match main button (Platinum) */
+  color: #ffffff;        /* White text for contrast */
+
+}
+
+
+/* BACK + RESTART (small buttons) */
+.small-btn {
+
+  width: 140px;
+  height: 45px;
+
+  font-size: 16px;
+
+  background: #731211;   /* UP Maroon */
+  color: white;
+
+  border-radius: 10px;
+}
+
+
+/* HOVER EFFECT (TEXT NEVER DISAPPEARS) */
+button:hover {
+
+  transform: translateY(-4px);
+
+  background: #997A80;   /* Bazaar */
+  color: #ffffff;        /* ALWAYS WHITE */
+
+  box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+}
+
+/* Option hover: platinum with black text for visibility (only on hover-capable devices) */
+@media (hover: hover) and (pointer: fine) {
+  .opt:hover {
+    background: #A4B5C3 !important;
+    color: #000000 !important;
+    transform: translateY(-4px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+  }
+}
+
+
+/* Small button hover */
+.small-btn:hover {
+
+  background: #911a1a;
+  color: white;
+
+  transform: translateY(-3px);
+}
+
+
+/* CLICK EFFECT */
+button:active,
+.opt:active,
+.small-btn:active {
+
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+
+/* DISABLED */
+button:disabled {
+
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.opt:disabled {
+
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Force all text inside the game screen to black for readability */
+/* Force all text (including numbers) and pseudo-elements inside the game screen to black */
+#game,
+#game *,
+#game *::before,
+#game *::after {
+  color: #000;
+  -webkit-text-fill-color: #000;
+}
+
+/* Ensure option buttons and small controls in the game use black text (override other rules) */
+#game .opt,
+#game .small-btn,
+#game button,
+#game #question,
+#game #counter,
+#game #playerInfo,
+#game #status {
+  color: #000;
+  -webkit-text-fill-color: #000;
+}
+
+/* Keep only the Back/Restart small buttons white for contrast */
+#game .controls .small-btn {
+  color: #fff !important;
+  -webkit-text-fill-color: #fff !important;
+}
+
+/* Status classes for correct / wrong messages (use !important to override other rules) */
+.status-correct {
+  color: #2E7D32 !important;
+  -webkit-text-fill-color: #2E7D32 !important;
+}
+.status-wrong {
+  color: #D32F2F !important;
+  -webkit-text-fill-color: #D32F2F !important;
+}
+
+/* Mobile / touch fixes: remove tap highlight and ensure focus/active styles don't persist */
+button, .opt, .small-btn {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
+
+.opt:focus, .opt:active, .opt:focus-visible {
+  outline: none;
+  box-shadow: none;
+  /* Reset visual hover/active styles on touch devices so they don't "stick" */
+  background: #EAE0DC !important;
+  color: #293039 !important;
+}
+
+button:focus, .small-btn:focus {
+  outline: none;
+}
+
+/* Ensure game screens adapt to mobile viewport changes */
+.screen { min-height: calc(100vh - 80px); height: auto; }
+
+/* ================= RESULT SCREEN STYLING ================= */
+
+#result {
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+}
+
+/* Main Result Heading */
+#finalMsg {
+  font-family: "Pacifico", cursive;
+  font-size: 48px;
+  color: #731211;
+  margin-bottom: 10px;
+}
+
+/* Player Message */
+#resultName {
+  font-size: 26px;
+  font-weight: 600;
+  color: #293039;
+  margin-bottom: 10px;
+}
+
+/* Score & Percentage */
+#finalScore {
+  font-size: 22px;
+  font-weight: 500;
+  color: #800080; /* purple */
+  margin: 5px 0;
+}
+
+#finalPercent {
+  font-size: 22px;
+  font-weight: 500;
+  color: #4A85C3;
+  margin: 5px 0;
+}
+
+/* Rank Text */
+#finalRank {
+  font-size: 28px;
+  font-weight: 700;
+  color: #008080; /* teal */
+  margin: 15px 0;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+}
+
+/* Play Again Button */
+#result button {
+  background: #997A80;
+  color: white;
+  font-weight: bold;
+  margin-top: 20px;
+  transition: all 0.2s ease;
+}
+
+#result button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.25);
+}
